@@ -44,9 +44,8 @@
 #'                              dsn = paste0(getwd(), "/data"))
 #' gimms_files[1:10]
 #' }
-#' @export downloadGimms
-#' @name downloadGimms
-#' @aliases downloadChirps,numeric-method
+#' @export downloadChirps
+#' @name downloadChirps
 NULL
 
 downloadChirps <- function(region = c("global", "whem", "africa", "camer-carib"),
