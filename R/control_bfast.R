@@ -1,5 +1,13 @@
+################################################################################
+### global settings
+################################################################################
+
+## working directory
+setwd("/media/fdetsch/dev/chirps/")
+
 ## required packages
-library(plyr)
+lib <- c("plyr", "Rsenal", "RColorBrewer", "grid", "lattice")
+Orcs::loadPkgs(lib)
 
 ## required functions
 source("R/bfastTemplate.R")
@@ -16,16 +24,16 @@ lst_bfast <- lapply(fls_bfast, function(i) {
 dat_bfast <- do.call("rbind.fill", lst_bfast)
 
 ## raster template
-rst_template <- bfastTemplate()
+rst_template <- bfastTemplate(local = TRUE, dsn = "data")
 rst_breaks_counts <- rst_breaks_maxtime <- rst_breaks_maxmagn <- rst_template
 
 ## number of breakpoints
 rst_breaks_counts[] <- dat_bfast[, "bp_vt_ct"]
 rst_breaks_counts <- mask(rst_breaks_counts, spy_iran)
 
-col_counts <- brewer.pal(5, "YlGnBu")
-p_counts <- spplot(rst_breaks_counts, col.regions = col_counts,
-                   at = seq(.5, 5.5, 1), scales = list(draw = TRUE),
+# col_counts <- brewer.pal(5, "YlGnBu")
+p_counts <- spplot(rst_breaks_counts, col.regions = "cornflowerblue",
+                   at = seq(.5, 1.5, 1), scales = list(draw = TRUE),
                    colorkey = FALSE) +
   latticeExtra::layer(sp.polygons(spy_iran))
 
@@ -35,13 +43,13 @@ rst_breaks_maxmagn <- mask(rst_breaks_maxmagn, spy_iran)
 
 col_maxmagn <- colorRampPalette(brewer.pal(9, "BrBG"))
 
-int_id <- which(rst_breaks_maxmagn[] > .25)
-spt_maxval <- xyFromCell(rst_breaks_maxmagn, int_id, spatial = TRUE)
-rst_breaks_maxmagn[int_id] <- NA
+# int_id <- which(rst_breaks_maxmagn[] > .25)
+# spt_maxval <- xyFromCell(rst_breaks_maxmagn, int_id, spatial = TRUE)
+# rst_breaks_maxmagn[int_id] <- NA
 
-brks <- quantile(rst_breaks_maxmagn, seq(0, 1, length.out = 256))
+# brks <- quantile(rst_breaks_maxmagn, seq(0, 1, length.out = 256))
 p_maxmagn <- spplot(rst_breaks_maxmagn, col.regions = col_maxmagn(1000),
-                    at = c(-.3, brks, .3), scales = list(draw = TRUE)) +
+                    at = seq(-39, 39, .1), scales = list(draw = TRUE)) +
   latticeExtra::layer(sp.polygons(spy_iran))
 
 rst_breaks_maxtime[] <- dat_bfast[, "bp_vt_maxtime"]
@@ -57,7 +65,8 @@ p_comb <- latticeCombineGrid(list(p_counts, p_maxtime, p_maxmagn),
                              layout = c(3, 1))
 
 # store
-png("out/bfast_trend.png", width = 21, height = 13, units = "cm", res = 500)
+png("out/chirps_bfast_trend.png", width = 21, height = 13, units = "cm",
+    res = 500)
 grid.newpage()
 
 vp0 <- viewport(x = 0, y = 0, width = 1, height = .9,
@@ -70,10 +79,10 @@ upViewport()
 vp1 <- viewport(x = .06, y = .72, width = 1/3, height = .1,
                 just = c("left", "bottom"), name = "vp_key1")
 pushViewport(vp1)
-draw.colorkey(key = list(col = col_counts, width = 1, height = .5,
-                         at = seq(.5, 5.5, 1),
-                         space = "bottom"), draw = TRUE)
-grid.text("Trend breakpoints", x = 0.5, y = 1.12, just = c("centre", "top"),
+# draw.colorkey(key = list(col = "cornflowerblue", width = 1, height = .5,
+#                          at = seq(.5, 1.5, 1),
+#                          space = "bottom"), draw = TRUE)
+grid.text("Trend breakpoints", x = 0.5, y = 1.2, just = c("centre", "top"),
           gp = gpar(font = 2, cex = .85))
 
 # key middle
@@ -84,7 +93,7 @@ pushViewport(vp2)
 draw.colorkey(key = list(col = col_maxtime,
                          width = 1, height = .5,
                          at = 1985:2010, space = "bottom"), draw = TRUE)
-grid.text("Timing of biggest change", x = 0.5, y = 1.12,
+grid.text("Timing of biggest change", x = 0.5, y = 1.2,
           just = c("centre", "top"), gp = gpar(font = 2, cex = .85))
 
 # key right
@@ -93,8 +102,8 @@ vp3 <- viewport(x = 2/3 - .02, y = .72, width = 1/3, height = .1,
                 just = c("left", "bottom"), name = "vp_key3")
 pushViewport(vp3)
 draw.colorkey(key = list(col = col_maxmagn(1000), width = 1, height = .5,
-                         at = c(-.3, brks, .3), space = "bottom"), draw = TRUE)
-grid.text("Magnitude of biggest change", x = 0.5, y = 1.12,
+                         at = seq(-39, 39, .1), space = "bottom"), draw = TRUE)
+grid.text("Magnitude of biggest change", x = 0.5, y = 1.2,
           just = c("centre", "top"), gp = gpar(font = 2, cex = .85))
 
 dev.off()
