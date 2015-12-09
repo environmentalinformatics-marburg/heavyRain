@@ -1,14 +1,14 @@
 ## working directory
 # library(Orcs)
 # setwdOS(path_ext = "programming/r/chirps")
-setwd("/media/fdetsch/modis_data/chirps/")
+setwd("/media/fdetsch/dev/chirps")
 
 ## packages
 lib <- c("chirps", "doParallel", "gimms", "Kendall", "RColorBrewer", "Rsenal")
 jnk <- sapply(lib, function(x) library(x, character.only = TRUE))
 
 ## parallelization
-supcl <- makeCluster(4)
+supcl <- makeCluster(3)
 registerDoParallel(supcl)
 
 # ## extract files from .gz
@@ -35,19 +35,19 @@ suppressWarnings(proj4string(spy_iran) <- "+init=epsg:4326")
 ## crop global data
 ################################################################################
 
-overwrite <- FALSE
+overwrite <- TRUE
 lst_chirps_crp <-
   foreach(i = chirps_files, .packages = c("raster", "rgdal")) %dopar% {
     # output filename
     filename <- paste0("data/crp/CRP_", basename(i))
     # if file does not exist or overwrite is TRUE, crop image
     if (!file.exists(filename) | overwrite) {
-      rst <- raster(i)
-      crop(rst, spy_iran, snap = "out", filename = filename,
-           format = "GTiff", overwrite = TRUE)
+      rst <- raster::raster(i)
+      raster::crop(rst, spy_iran, snap = "out", filename = filename,
+                   format = "GTiff", overwrite = TRUE)
     # otherwise return existing cropped image
     } else {
-      raster(filename)
+      raster::raster(filename)
     }
   }
 
