@@ -28,4 +28,3 @@ named CHIRPS files (compressed or decompressed).
 \author{
 Florian Detsch
 }
-

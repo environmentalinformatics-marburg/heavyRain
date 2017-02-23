@@ -52,10 +52,9 @@ gimms_files <- downloadGimms(x = 2000, y = 2005,
 gimms_files[1:10]
 }
 }
-\author{
-Florian Detsch
-}
 \seealso{
 \code{\link{download.file}}
 }
-
+\author{
+Florian Detsch
+}

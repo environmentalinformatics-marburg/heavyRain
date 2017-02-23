@@ -34,10 +34,9 @@ time series observations, but also to stratified subsets of the very same,
 i.e., across monthly (Jan-Dec) and seasonal ('DJF', 'MAM', 'JJA', 'SON')
 chunks of layers.
 }
-\author{
-Florian Detsch
-}
 \seealso{
 \code{\link{significantTau}}.
 }
-
+\author{
+Florian Detsch
+}

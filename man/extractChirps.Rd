@@ -27,4 +27,3 @@ a single or multiple CHIRPS *.gz files to a specified destination folder.
 \author{
 Florian Detsch
 }
-
