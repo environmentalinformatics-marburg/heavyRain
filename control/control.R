@@ -1,7 +1,7 @@
 ## working directory
 # library(Orcs)
 # setwdOS(path_ext = "programming/r/chirps")
-setwd("/media/fdetsch/dev/chirps")
+# setwd("/media/fdetsch/dev/chirps")
 
 ## packages
 lib <- c("chirps", "doParallel", "gimms", "Kendall", "RColorBrewer", "Rsenal")

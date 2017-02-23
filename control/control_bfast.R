@@ -2,8 +2,8 @@
 ### global settings
 ################################################################################
 
-## working directory
-setwd("/media/fdetsch/dev/chirps/")
+# ## working directory
+# setwd("/media/fdetsch/dev/chirps/")
 
 ## required packages
 lib <- c("plyr", "Rsenal", "RColorBrewer", "grid", "lattice")
