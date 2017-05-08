@@ -20,8 +20,13 @@
 extractChirps <- function(x, dsn, cores = 1L, ...) {
 
   ## if not supplied, 'dsn' defaults to unique location of 'x'
-  if (missing(dsn))
+  if (missing(dsn)) {
     dsn <- unique(dirname(x))
+
+  ## else create destination folder (if required)
+  } else if (!dir.exists(dsn)) {
+    dir.create(dsn, recursive = TRUE)
+  }
 
   ## target filenames
   destname <- paste0(dsn, "/", substr(basename(x), 1, nchar(basename(x)) - 3))
