@@ -5,10 +5,10 @@
 #' a single or multiple CHIRPS *.gz files to a specified destination folder.
 #'
 #' @param x 'character'. Input filename(s).
-#' @param exdir 'character'. The destination folder for file extraction.
+#' @param dsn 'character'. The destination folder for file extraction.
 #' @param cores 'integer'. The number of cores used for parallel processing via
 #' \strong{doParallel}.
-#' @param ... Further arguments passed on to \code{\link{gunzip}}, e.g. 'skip',
+#' @param ... Further arguments passed to \code{\link{gunzip}}, e.g. 'skip',
 #' 'overwrite' and 'remove'.
 #'
 #' @return A 'character' vector of filenames.
@@ -17,29 +17,28 @@
 #'
 #' @export extractChirps
 #' @name extractChirps
-extractChirps <- function(x, exdir, cores = 1L, ...) {
+extractChirps <- function(x, dsn, cores = 1L, ...) {
 
-  ## if not supplied, 'exdir' defaults to unique location of 'x'
-  if (missing(exdir))
-    exdir <- unique(dirname(x))
+  ## if not supplied, 'dsn' defaults to unique location of 'x'
+  if (missing(dsn))
+    dsn <- unique(dirname(x))
 
   ## target filenames
-  destname <- paste0(exdir, "/", substr(basename(x), 1, nchar(basename(x))-3))
+  destname <- paste0(dsn, "/", substr(basename(x), 1, nchar(basename(x)) - 3))
 
-  if (cores > 1L) {
-    cl <- parallel::makeCluster(cores)
-    doParallel::registerDoParallel(cl)
-  }
+  ## extract files
+  cl <- parallel::makePSOCKcluster(cores)
+  on.exit(parallel::stopCluster(cl))
 
-  suppressWarnings(
-    jnk <- foreach(i = 1:length(x), .packages = "R.utils",
-                   .export = ls(envir = globalenv())) %dopar%
-      R.utils::gunzip(x[i], destname = destname[i], ...)
-  )
+  dots <- list(...)
+  parallel::clusterExport(cl, c("x", "destname", "dots"), envir = environment())
 
-  ## deregister parallel backend
-  if (cores > 1L)
-    parallel::stopCluster(cl)
+    jnk <- parallel::parLapply(cl, 1:length(x), function(i) {
+      dots_sub <- list(filename = x[i], destname = destname[i])
+      dots_sub <- append(dots_sub, dots)
+
+      do.call(R.utils::gunzip, args = dots_sub)
+    })
 
   ## return names of extracted files
   return(destname)

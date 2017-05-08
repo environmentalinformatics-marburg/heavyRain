@@ -4,17 +4,17 @@
 \alias{extractChirps}
 \title{Extract compressed CHIRPS files}
 \usage{
-extractChirps(x, exdir, cores = 1L, ...)
+extractChirps(x, dsn, cores = 1L, ...)
 }
 \arguments{
 \item{x}{'character'. Input filename(s).}
 
-\item{exdir}{'character'. The destination folder for file extraction.}
+\item{dsn}{'character'. The destination folder for file extraction.}
 
 \item{cores}{'integer'. The number of cores used for parallel processing via
 \strong{doParallel}.}
 
-\item{...}{Further arguments passed on to \code{\link{gunzip}}, e.g. 'skip',
+\item{...}{Further arguments passed to \code{\link{gunzip}}, e.g. 'skip',
 'overwrite' and 'remove'.}
 }
 \value{
