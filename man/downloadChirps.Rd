@@ -4,14 +4,14 @@
 \alias{downloadChirps}
 \title{Download CHIRPS data}
 \arguments{
-\item{region}{'character. Region of interest; one of 'global', 'whem'
+\item{region}{'character'. Region of interest; one of 'global', 'whem'
 (western hemisphere), 'africa' or 'camer-carib' (Central America and the
 Caribbean). See the official CHIRPS README (available online at
 \url{ftp://chg-ftpout.geog.ucsb.edu/pub/org/chg/products/CHIRPS-2.0/README-CHIRPS.txt})
 for further information.}
 
-\item{format}{'character'. Desired file format; one of 'tifs', 'netcdf',
-'bils' or 'pngs'.}
+\item{format}{'character'. Desired file format; one of 'tifs', 'bils' or
+'pngs'.}
 
 \item{tres}{'character'. Desired temporal resolution; one of 'daily',
 'pentad', 'dekad' or 'monthly'.}
@@ -19,11 +19,8 @@ for further information.}
 \item{sres}{'numeric'. Desired spatial resolution; one of
 \code{c(0.05, 0.25)}.}
 
-\item{begin}{'date'. If not supplied, data download starts with the first
-record available.}
-
-\item{end}{'date'. If not supplied, data download stops at the last record
-available.}
+\item{begin, end}{'date'. If not supplied, data download starts (stops) with
+the first (last) record available.}
 
 \item{dsn}{'character'. Destination folder for file download, defaults to the
 current working directory.}
@@ -31,13 +28,12 @@ current working directory.}
 \item{overwrite}{Logical. If \code{TRUE}, already downloaded files in 'dsn'
 will be overwritten.}
 
-\item{cores}{'integer'. The number of cores used for parallel download via
-\strong{doParallel}.}
+\item{cores}{'integer'. The number of cores used for parallel downloads.}
 
-\item{...}{Further arguments passed on to \code{\link{download.file}}.}
+\item{...}{Further arguments passed to \code{\link{download.file}}.}
 }
 \value{
-A vector of filepaths.
+A \code{character} vector of file paths.
 }
 \description{
 Download Climate Hazards Group InfraRed Precipitation with Station (CHIRPS)
