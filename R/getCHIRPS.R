@@ -41,11 +41,11 @@
 #'                              dsn = paste0(getwd(), "/data"))
 #' gimms_files[1:10]
 #' }
-#' @export downloadChirps
-#' @name downloadChirps
+#' @export getCHIRPS
+#' @name getCHIRPS
 NULL
 
-downloadChirps <- function(region = c("global", "whem", "africa", "camer-carib"),
+getCHIRPS <- function(region = c("global", "whem", "africa", "camer-carib"),
                            format = c("tifs", "bils", "pngs"),
                            tres = c("daily", "pentad", "dekad", "monthly"),
                            sres = c(0.05, 0.25),
