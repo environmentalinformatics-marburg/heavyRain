@@ -60,16 +60,25 @@ lsCat3 <- function(url, begin, end) {
 }
 
 
-### Server paths for CHIRPS data download -----
+### Server paths for CHIRPS or TRMM data download -----
 
-serverPath <- function(server = "chirps", version = "2.0") {
-  if (server != "chirps")
-    stop("Specified server not available or (currently) not supported.\n")
+serverPath <- function(server = c("chirps", "trmm"), version = "2.0") {
 
-  if (!(version %in% c("2.0", "1.8")))
-    stop("Specified version not available or (currently) not supported.\n")
+  ## server not implemented
+  if (!(server[1] %in% c("chirps", "trmm")))
+    stop("Specified product not available or (currently) not supported.\n")
 
-  paste0("ftp://chg-ftpout.geog.ucsb.edu/pub/org/chg/products/CHIRPS-", version)
+  ## chirps
+  if (server[1] == "chirps") {
+    if (!(version %in% c("2.0", "1.8")))
+      stop("Specified version not available or (currently) not supported.\n")
+
+    paste0("ftp://chg-ftpout.geog.ucsb.edu/pub/org/chg/products/CHIRPS-", version)
+
+  ## trmm
+  } else if (server[1] == "trmm") {
+    "https://disc3.nascom.nasa.gov/data/TRMM_L3/"
+  }
 }
 
 
