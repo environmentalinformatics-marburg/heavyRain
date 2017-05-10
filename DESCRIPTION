@@ -1,12 +1,12 @@
-Package: chirps
+Package: heavyRain
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Download and Pre-Process CHIRPS and TRMM Rainfall Data Sets in R
 Version: 0.1
-Date: 2015-10-26
+Date: 2017-05-10
 Author: Florian Detsch
 Maintainer: Florian Detsch <florian.detsch@staff.uni-marburg.de>
 Description: More about what it does (maybe more than one line)
-License: What license is it under?
+License: GPL (>= 3) | file LICENSE
 LazyData: TRUE
 Depends:
     doParallel,
