@@ -24,7 +24,9 @@
 #' additional arguments passed to \code{\link{as.Date}}.
 #'
 #' @return
-#' A \code{character} vector of local filepaths.
+#' If \code{xml = FALSE} (default), a \code{character} vector of local file
+#' paths. Else a \code{list} of file paths with each entry corresponding to a
+#' single date.
 #'
 #' @author
 #' Florian Detsch
@@ -74,7 +76,7 @@ getTRMM <- function(begin, end, type = c("daily", "3-hourly"),
   on.exit(parallel::stopCluster(cl))
 
   ## download
-  parallel::parSapply(cl, 1:length(onl), function(i) {
+  hdf <- parallel::parLapply(cl, 1:length(onl), function(i) {
 
     # if target file exists and overwrite is disabled, return local file
     ofl1 <- ofl[i]; ofl2 <- gsub("7.HDF$", "7A.HDF", ofl[i])
@@ -111,6 +113,11 @@ getTRMM <- function(begin, end, type = c("daily", "3-hourly"),
       return(invisible())
     }
   })
+
+  if (!xml)
+    return(unlist(hdf))
+  else
+    return(hdf)
 }
 
 
