@@ -15,9 +15,9 @@
 #'
 #' @author Florian Detsch
 #'
-#' @export extractChirps
-#' @name extractChirps
-extractChirps <- function(x, dsn, cores = 1L, ...) {
+#' @export extractCHIRPS
+#' @name extractCHIRPS
+extractCHIRPS <- function(x, dsn, cores = 1L, ...) {
 
   ## if not supplied, 'dsn' defaults to unique location of 'x'
   if (missing(dsn)) {

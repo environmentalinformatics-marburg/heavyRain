@@ -37,7 +37,7 @@
 #' @references
 #' MacRitchie K (2015) README Document for the Tropical Rainfall Measurement
 #' Mission (TRMM). Available online from
-#' \url{https://disc3.nascom.nasa.gov/data/TRMM_L3/TRMM_3B42.7/doc/TRMM_Readme_v6.pdf}.
+#' \url{https://disc3.nascom.nasa.gov/data/TRMM_L3/TRMM_3B42.7/doc/README.TRMM_V7.pdf}.
 #'
 #' @examples
 #' \dontrun{

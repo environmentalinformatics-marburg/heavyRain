@@ -1,7 +1,7 @@
 #' Compute stratified Mann-Kendall trend tests
 #'
 #' @description
-#' In contrast to most existing implementation, this function allows you to
+#' In contrast to most existing implementations, this function allows you to
 #' apply pixel-based Mann-Kendall trend tests not only to a raw 'RasterStack' of
 #' time series observations, but also to stratified subsets of the very same,
 #' i.e., across monthly (Jan-Dec) and seasonal ('DJF', 'MAM', 'JJA', 'SON')
@@ -13,121 +13,102 @@
 #' (Mann-Kendall test across unique seasons).
 #' @param p Significance level to be tested.
 #' @param prewhitening 'logical'. If \code{TRUE}, pre-whitening is applied prior
-#' to the actual Mann-Kendall trend test. See also \code{\link{significantTau}}
-#' and description of package \strong{zyp}
-#' (\url{https://cran.r-project.org/web/packages/zyp/zyp.pdf}).
-#' @param cores If desired number of cores to use for parallel processing.
+#' to the actual Mann-Kendall trend test.
+#' @param cores Number of cores for parallel processing.
 #'
 #' @return
-#' A 'list' with single entries corresponding to the significance levels in
-#' \code{p}.
+#' A 'Raster*' object.
 #'
 #' @author
 #' Florian Detsch
 #'
 #' @seealso
-#' \code{\link{significantTau}}.
+#' \code{\link{significantTau}}, \code{\link{confint}}.
+#'
+#' @examples
+#' \dontrun{
+#' ## overall trend
+#' overall_trend = stratifiedMannKendall(baleCHIRPS.v2, p = 1)
+#' spplot(overall_trend)
+#'
+#' ## monthly trend
+#' monthly_trend = stratifiedMannKendall(baleCHIRPS.v2, type = "monthly", p = 0.05)
+#' names(monthly_trend) = month.abb
+#' spplot(monthly_trend)
+#'
+#' ## seasonal trend
+#' seasons_trend = stratifiedMannKendall(baleCHIRPS.v2, type = "seasonal", p = 0.05)
+#' names(seasons_trend) = c("DJF", "MAM", "JJA", "SON")
+#' spplot(seasons_trend)
+#' }
 #'
 #' @export stratifiedMannKendall
 #' @name stratifiedMannKendall
 stratifiedMannKendall <- function(x, type = c("raw", "monthly", "seasonal"),
                                   p = 0.001, prewhitening = TRUE, cores = 1L) {
 
-  ## packages
-  lib <- c("foreach", "Rsenal")
-  jnk <- sapply(lib, function(x) library(x, character.only = TRUE))
+  type = type[1]
 
-  ## parallelize
-  if (cores > 1L) {
-    library(doParallel)
-    cl <- parallel::makeCluster(cores)
-    doParallel::registerDoParallel(cl)
-  }
+  ## parallelize (optional)
+  cl <- parallel::makeCluster(cores)
+  doParallel::registerDoParallel(cl)
+
+  on.exit(parallel::stopCluster(cl))
 
   ##############################################################################
   ## raw method
   if (type == "raw") {
 
-    # status message
-    cat("Raw data is in. Start processing...\n")
-
     # loop over all desired significance levels
-    lst_trends <- foreach(p = p, .packages = lib) %dopar% {
-      calc(x, fun = function(x) {
-             significantTau(x, p = p, prewhitening = prewhitening,
-                            conf.intervals = FALSE)
-           })
-    }
+    lst_trends <- raster::calc(x, fun = function(y) {
+      gimms::significantTau(y, p = p, prewhitening = prewhitening)
+    })
 
     ##############################################################################
     ## monthly method
   } else if (type == "monthly") {
 
-    # loop over all desired significance levels
-    lst_trends <- foreach(p = p) %do% {
+    # loop over monthly layers
+    suppressWarnings(
+      lst_trends <-
+        foreach(i = 1:12, .export = ls(envir = globalenv())) %dopar% {
 
-      # status message
-      cat("Processing significance level", p, "...\n")
+          rst_mnth <- x[[seq(i, raster::nlayers(x), 12)]]
 
-      # loop over monthly layers
-      suppressWarnings(
-        lst_trend <-
-          foreach(i = 1:12, j = month.abb,
-                  .packages = lib, .export = "significantTau") %dopar% {
+          raster::calc(rst_mnth, fun = function(y) {
+            gimms::significantTau(y, p = p, prewhitening = prewhitening)
+          })
+        }
+    )
 
-                    rst_mnth <- x[[seq(i, nlayers(x), 12)]]
-
-                    raster::calc(rst_mnth, fun = function(x) {
-                      Rsenal::significantTau(x, p = p,
-                                             prewhitening = prewhitening,
-                                             conf.intervals = FALSE)
-                    })
-                  }
-      )
-
-      # return stacked trend layers
-      return(stack(lst_trend))
-    }
+    # return stacked trend layers
+    return(raster::stack(lst_trends))
 
 
     ##############################################################################
     ## seasonal method
   } else if (type == "seasonal") {
 
-    # loop over all desired significance levels
-    lst_trends <- foreach(p = p) %do% {
+    # loop over seasonal layers
+    suppressWarnings(
+      lst_trends <-
+        foreach(i = 1:4, .export = ls(envir = globalenv())) %dopar% {
 
-      # status message
-      cat("Processing significance level", p, "...\n")
+                  rst_ssn <- x[[seq(i, raster::nlayers(x), 4)]]
 
-      # loop over seasonal layers
-      suppressWarnings(
-        lst_trend <-
-          foreach(i = 1:4, j = list("DJF", "MAM", "JJA", "SON"),
-                  .packages = c("raster", "rgdal", "Kendall"),
-                  .export = "significantTau") %dopar% {
+                  raster::calc(rst_ssn, fun = function(y) {
+                    gimms::significantTau(y, p = p,
+                                          prewhitening = prewhitening)
+                  })
+                }
+    )
 
-                    rst_ssn <- x[[seq(i, nlayers(x), 4)]]
-
-                    raster::calc(rst_ssn, fun = function(x) {
-                      Rsenal::significantTau(x, p = p,
-                                             prewhitening = prewhitening,
-                                             conf.intervals = FALSE)
-                    })
-                  }
-      )
-
-      # return stacked trend layers
-      return(raster::stack(lst_trend))
-    }
+    # return stacked trend layers
+    return(raster::stack(lst_trends))
 
   } else {
     stop("Invalid 'type' argument.\n")
   }
-
-  ## deregister parallel backend
-  if (cores > 1L)
-    parallel::stopCluster(cl)
 
   ## return list with different significance layers
   return(lst_trends)

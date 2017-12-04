@@ -34,7 +34,9 @@ available.}
 additional arguments passed to \code{\link{as.Date}}.}
 }
 \value{
-A \code{character} vector of local filepaths.
+If \code{xml = FALSE} (default), a \code{character} vector of local file
+paths. Else a \code{list} of file paths with each entry corresponding to a
+single date.
 }
 \description{
 Download TRMM 3B42 version 7 daily (NetCDF) or 3-hourly (HDF) files for a
@@ -54,7 +56,7 @@ getTRMM(begin = "2015-01-01", end = "2015-01-05", type = "3-hourly")
 \references{
 MacRitchie K (2015) README Document for the Tropical Rainfall Measurement
 Mission (TRMM). Available online from
-\url{https://disc3.nascom.nasa.gov/data/TRMM_L3/TRMM_3B42.7/doc/TRMM_Readme_v6.pdf}.
+\url{https://disc3.nascom.nasa.gov/data/TRMM_L3/TRMM_3B42.7/doc/README.TRMM_V7.pdf}.
 }
 \seealso{
 \code{\link{download.file}}.

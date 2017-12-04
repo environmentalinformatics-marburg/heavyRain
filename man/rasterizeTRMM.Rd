@@ -7,11 +7,11 @@
 rasterizeTRMM(x, ...)
 }
 \arguments{
-\item{x}{\code{character}. TRMM 3B42 file(s). Currently supported filetypes 
-are .bin and .HDF. Note that \code{\link{rasterizeTRMMbin}} takes one file 
-only.}
+\item{x}{TRMM 3B42 file(s) as \code{character}. Currently supported filetypes
+are .bin .HDF, and .nc4. Note that \code{\link{rasterizeTRMMbin}} takes one
+file only.}
 
-\item{...}{Additional arguments passed to \code{\link{rasterizeTRMMbin}} or 
+\item{...}{Additional arguments passed to \code{\link{rasterizeTRMMbin}} or
 \code{\link{rasterizeTRMMhdf}}.}
 }
 \value{
@@ -24,12 +24,11 @@ only.}
 Rasterize TRMM 3B42 .bin or .HDF files.
 }
 \examples{
- 
 \dontrun{
 ## download 3-hourly TRMM 3B42 data from Jan 1, 2015
-fls <- downloadTRMM(begin = "2015-01-01", end = "2015-01-01", 
+fls <- getTRMM(begin = "2015-01-01", end = "2015-01-01",
                     type = "3-hourly")
-fls[1]                     
+fls[1]
 
 ## rasterize
 library(rworldmap)
@@ -42,7 +41,7 @@ plot(rst[[1]])
 
 }
 \seealso{
-\code{\link{downloadTRMM}}, \code{\link{readBin}}, 
+\code{\link{getTRMM}}, \code{\link{readBin}},
 \code{\link{rasterizeTRMMbin}}, \code{\link{rasterizeTRMMhdf}}.
 }
 \author{

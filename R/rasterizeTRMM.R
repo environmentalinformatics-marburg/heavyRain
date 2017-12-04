@@ -19,13 +19,13 @@
 #' Florian Detsch
 #'
 #' @seealso
-#' \code{\link{downloadTRMM}}, \code{\link{readBin}},
+#' \code{\link{getTRMM}}, \code{\link{readBin}},
 #' \code{\link{rasterizeTRMMbin}}, \code{\link{rasterizeTRMMhdf}}.
 #'
 #' @examples
 #' \dontrun{
 #' ## download 3-hourly TRMM 3B42 data from Jan 1, 2015
-#' fls <- downloadTRMM(begin = "2015-01-01", end = "2015-01-01",
+#' fls <- getTRMM(begin = "2015-01-01", end = "2015-01-01",
 #'                     type = "3-hourly")
 #' fls[1]
 #'

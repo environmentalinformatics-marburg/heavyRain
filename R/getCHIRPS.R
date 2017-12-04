@@ -10,10 +10,10 @@
 #' Caribbean). See the official CHIRPS README (available online at
 #' \url{ftp://chg-ftpout.geog.ucsb.edu/pub/org/chg/products/CHIRPS-2.0/README-CHIRPS.txt})
 #' for further information.
-#' @param format 'character'. Desired file format; one of 'tifs', 'bils' or
-#' 'pngs'.
-#' @param tres 'character'. Desired temporal resolution; one of 'daily',
-#' 'pentad', 'dekad' or 'monthly'.
+#' @param format 'character'. Desired file format; one of 'tifs' (default),
+#' 'bils' or 'pngs'.
+#' @param tres 'character'. Desired temporal resolution; one of '6-hourly'
+#' (default), 'daily', 'pentad', 'dekad' or 'monthly'.
 #' @param sres 'numeric'. Desired spatial resolution; one of
 #' \code{c(0.05, 0.25)}.
 #' @param begin,end 'date'. If not supplied, data download starts (stops) with
@@ -41,17 +41,18 @@
 #'                              dsn = paste0(getwd(), "/data"))
 #' gimms_files[1:10]
 #' }
+#'
 #' @export getCHIRPS
 #' @name getCHIRPS
-NULL
-
 getCHIRPS <- function(region = c("global", "whem", "africa", "camer-carib"),
-                           format = c("tifs", "bils", "pngs"),
-                           tres = c("daily", "pentad", "dekad", "monthly"),
-                           sres = c(0.05, 0.25),
-                           begin = NULL, end = NULL,
-                           dsn = getwd(), overwrite = FALSE,
-                           cores = 1L, ...) {
+                      format = c("tifs", "bils", "pngs"),
+                      tres = c("6-hourly", "daily", "pentad", "dekad", "monthly"),
+                      sres = c(0.05, 0.25),
+                      begin = NULL, end = NULL,
+                      dsn = getwd(), overwrite = FALSE,
+                      cores = 1L, ...) {
+
+  region = region[1]; format = format[1]; tres = tres[1]; sres = sres[1]
 
   ## time frame
   if (is.null(begin)) begin <- as.Date("1981-01-01")
@@ -61,18 +62,18 @@ getCHIRPS <- function(region = c("global", "whem", "africa", "camer-carib"),
   if (!dir.exists(dsn)) dir.create(dsn, recursive = TRUE)
 
   ## dataset
-  ch_ext <- paste(region[1], tres[1], sep = "_")
+  ch_ext <- paste(region, tres, sep = "_")
 
   ## format (not required for 6-hourly files)
   ch_ext <- if (tres == "6-hourly") {
     paste0(ch_ext, "/p1_bin")
   } else {
-    paste0(ch_ext, "/", format[1])
+    paste0(ch_ext, "/", format)
   }
 
   ## spatial resolution (only required for daily files)
   if (tres == "daily") {
-    sres <- formatC(sres[1] * 100, width = 2, flag = 0)
+    sres <- formatC(sres * 100, width = 2, flag = 0)
     sres <- paste0("p", sres)
     ch_ext <- paste0(ch_ext, "/", sres)
   }
@@ -86,7 +87,9 @@ getCHIRPS <- function(region = c("global", "whem", "africa", "camer-carib"),
     lsCat2(ch_url, begin, end)
   } else if (tres == "daily") {
     lsCat3(ch_url, begin, end)
-  } else stop("Specified temporal resolution (currently) not available.\n")
+  } else {
+    stop("Specified temporal resolution (currently) not available.\n")
+  }
 
   ## download files
   cl <- parallel::makePSOCKcluster(cores)
@@ -99,7 +102,7 @@ getCHIRPS <- function(region = c("global", "whem", "africa", "camer-carib"),
   do.call("c", parallel::parLapply(cl, onl, function(j) {
 
     # download current file
-    destfile <- paste0(normalizePath(dsn), "/", basename(j))
+    destfile <- file.path(dsn, basename(j))
     jnk <- if (!file.exists(destfile) | overwrite) {
       dots_sub <- list(url = j, destfile = destfile)
       dots_sub <- append(dots_sub, dots)

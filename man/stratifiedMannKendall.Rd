@@ -17,25 +17,40 @@ stratifiedMannKendall(x, type = c("raw", "monthly", "seasonal"), p = 0.001,
 \item{p}{Significance level to be tested.}
 
 \item{prewhitening}{'logical'. If \code{TRUE}, pre-whitening is applied prior
-to the actual Mann-Kendall trend test. See also \code{\link{significantTau}}
-and description of package \strong{zyp}
-(\url{https://cran.r-project.org/web/packages/zyp/zyp.pdf}).}
+to the actual Mann-Kendall trend test.}
 
-\item{cores}{If desired number of cores to use for parallel processing.}
+\item{cores}{Number of cores for parallel processing.}
 }
 \value{
-A 'list' with single entries corresponding to the significance levels in
-\code{p}.
+A 'Raster*' object.
 }
 \description{
-In contrast to most existing implementation, this function allows you to
+In contrast to most existing implementations, this function allows you to
 apply pixel-based Mann-Kendall trend tests not only to a raw 'RasterStack' of
 time series observations, but also to stratified subsets of the very same,
 i.e., across monthly (Jan-Dec) and seasonal ('DJF', 'MAM', 'JJA', 'SON')
 chunks of layers.
 }
+\examples{
+\dontrun{
+## overall trend
+overall_trend = stratifiedMannKendall(baleCHIRPS.v2, p = 1)
+spplot(overall_trend)
+
+## monthly trend
+monthly_trend = stratifiedMannKendall(baleCHIRPS.v2, type = "monthly", p = 0.05)
+names(monthly_trend) = month.abb
+spplot(monthly_trend)
+
+## seasonal trend
+seasons_trend = stratifiedMannKendall(baleCHIRPS.v2, type = "seasonal", p = 0.05)
+names(seasons_trend) = c("DJF", "MAM", "JJA", "SON")
+spplot(seasons_trend)
+}
+
+}
 \seealso{
-\code{\link{significantTau}}.
+\code{\link{significantTau}}, \code{\link{confint}}.
 }
 \author{
 Florian Detsch

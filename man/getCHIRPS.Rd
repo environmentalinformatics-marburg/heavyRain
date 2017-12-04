@@ -3,6 +3,12 @@
 \name{getCHIRPS}
 \alias{getCHIRPS}
 \title{Download CHIRPS data}
+\usage{
+getCHIRPS(region = c("global", "whem", "africa", "camer-carib"),
+  format = c("tifs", "bils", "pngs"), tres = c("6-hourly", "daily",
+  "pentad", "dekad", "monthly"), sres = c(0.05, 0.25), begin = NULL,
+  end = NULL, dsn = getwd(), overwrite = FALSE, cores = 1L, ...)
+}
 \arguments{
 \item{region}{'character'. Region of interest; one of 'global', 'whem'
 (western hemisphere), 'africa' or 'camer-carib' (Central America and the
@@ -10,11 +16,11 @@ Caribbean). See the official CHIRPS README (available online at
 \url{ftp://chg-ftpout.geog.ucsb.edu/pub/org/chg/products/CHIRPS-2.0/README-CHIRPS.txt})
 for further information.}
 
-\item{format}{'character'. Desired file format; one of 'tifs', 'bils' or
-'pngs'.}
+\item{format}{'character'. Desired file format; one of 'tifs' (default),
+'bils' or 'pngs'.}
 
-\item{tres}{'character'. Desired temporal resolution; one of 'daily',
-'pentad', 'dekad' or 'monthly'.}
+\item{tres}{'character'. Desired temporal resolution; one of '6-hourly'
+(default), 'daily', 'pentad', 'dekad' or 'monthly'.}
 
 \item{sres}{'numeric'. Desired spatial resolution; one of
 \code{c(0.05, 0.25)}.}
@@ -47,6 +53,7 @@ gimms_files <- downloadGimms(x = 2000, y = 2005,
                              dsn = paste0(getwd(), "/data"))
 gimms_files[1:10]
 }
+
 }
 \seealso{
 \code{\link{download.file}}

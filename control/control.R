@@ -14,7 +14,7 @@ registerDoParallel(supcl)
 # ## extract files from .gz
 # chirps_files_gz <- list.files("data/gz", pattern = ".gz$", full.names = TRUE)
 #
-# chirps_files <- extractChirps(chirps_files_gz, exdir = "data/tif", cores = 3L,
+# chirps_files <- extractCHIRPS(chirps_files_gz, exdir = "data/tif", cores = 3L,
 #                               remove = FALSE, overwrite = TRUE)
 
 chirps_files <- list.files("data/tif", pattern = ".tif$", full.names = TRUE)
@@ -60,8 +60,8 @@ lst_chirps_scl <-
     if (!file.exists(filename) | overwrite) {
       rst <- i
       rst[rst[] < 0] <- NA
-      writeRaster(rst, filename = filename,
-                  format = "GTiff", overwrite = TRUE)
+      raster::writeRaster(rst, filename = filename,
+                          format = "GTiff", overwrite = TRUE)
       # otherwise return existing cropped image
     } else {
       raster(filename)
@@ -87,7 +87,7 @@ val_stat <-
 
 ## convert to wide format and save
 mat_stat <- t(val_stat)
-names(mat_stat) <- chirps::monthlyIndices(chirps_files, timestamp = TRUE)
+names(mat_stat) <- heavyRain::monthlyIndices(chirps_files, timestamp = TRUE)
 saveRDS(mat_stat, file = "/media/fdetsch/modis_data/chirps/data/chirps_scl_gsod.rds")
 
 
@@ -123,7 +123,7 @@ lst_chirps_rsmpl <-
 ################################################################################
 
 ## monthly indices
-int_months <- chirps::monthlyIndices(chirps_files, format = "%b %y")
+int_months <- heavyRain::monthlyIndices(chirps_files, format = "%b %y")
 
 lst_chirps_files <- split(chirps_files, f = int_months)
 lst_chirps_split <- split(lst_chirps_rsmpl, f = int_months)
@@ -265,12 +265,12 @@ lst_mnth_trends <- foreach(p = c(0.05, 0.01, 0.001)) %do% {
 
 #   lst_mnth_trends <-
 #     foreach(i = 1:12, j = month.abb,
-#             .packages = lib, .export = "significantTau") %dopar% {
+#             .packages = lib) %dopar% {
 #
 #               rst_mnth <- rst_chirps_dsn_mnth[[seq(i, nlayers(rst_chirps_dsn_mnth), 12)]]
 #
 #               calc(rst_mnth, fun = function(x) {
-#                 significantTau(x, p = p, prewhitening = TRUE, conf.intervals = FALSE)
+#                 gimms::significantTau(x, p = p, prewhitening = TRUE)
 #               }, filename = paste0("data/out/monthly/chirps_mk", gsub("0\\.", "", p), "_", j, "_8213"),
 #               format = "GTiff", overwrite = TRUE)
 #             }
@@ -327,13 +327,12 @@ lst_ssn_trends <- foreach(p = c(0.05, 0.01, 0.001)) %do% {
 
   lst_ssn_trends <-
     foreach(i = 1:4, j = list("DJF", "MAM", "JJA", "SON"),
-            .packages = c("raster", "rgdal", "Kendall"),
-            .export = "significantTau") %dopar% {
+            .packages = c("raster", "rgdal", "Kendall")) %dopar% {
 
               rst_ssn <- rst_chirps_dsn_ssn[[seq(i, nlayers(rst_chirps_dsn_ssn), 4)]]
 
-              calc(rst_ssn, fun = function(x) {
-                significantTau(x, p = p, prewhitening = TRUE, conf.intervals = FALSE)
+              raster::calc(rst_ssn, fun = function(x) {
+                gimms::significantTau(x, p = p, prewhitening = TRUE, conf.intervals = FALSE)
               }, filename = paste0("data/out/seasonal/chirps_mk", gsub("0\\.", "", p), "_", j, "_8213"),
               format = "GTiff", overwrite = TRUE)
             }

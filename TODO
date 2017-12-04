@@ -1,0 +1,7 @@
+- testthat
+- sample data
+- begin, end for lsCat1() method, check other methods
+
+stratifiedMannKendall: no visible binding for global variable 'i'
+Undefined global functions or variables:
+  i

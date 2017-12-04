@@ -4,9 +4,8 @@ bfastTemplate <- function(local = FALSE, dsn, ...) {
     chirps_files <- list.files(dsn, full.names = TRUE, pattern = ".tif$")
     chirps_raster <- raster::stack(chirps_files[1])
   } else {
-    chirps_files <- chirps::updateInventory()
-    chirps_files <- chirps::downloadchirps(chirps_files[1], ...)
-    chirps_raster <- chirps::rasterizechirps(chirps_files, remove_header = TRUE)
+    chirps_files <- heavyRain::getCHIRPS(...)
+    chirps_raster <- heavyRain::extractCHIRPS(chirps_files)
     file.remove(chirps_files)
   }
 
