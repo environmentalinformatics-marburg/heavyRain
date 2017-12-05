@@ -1,7 +1,3 @@
 - testthat
-- sample data
-- begin, end for lsCat1() method, check other methods
-
-stratifiedMannKendall: no visible binding for global variable 'i'
-Undefined global functions or variables:
-  i
+- begin, end -> check lsCat() methods in downloadControls
+- does parallel calculation in stratifiedMannKendall() perform any better?
