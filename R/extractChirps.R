@@ -6,8 +6,7 @@
 #'
 #' @param x 'character'. Input filename(s).
 #' @param dsn 'character'. The destination folder for file extraction.
-#' @param cores 'integer'. The number of cores used for parallel processing via
-#' \strong{doParallel}.
+#' @param cores 'integer'. The number of cores used for parallel processing.
 #' @param ... Further arguments passed to \code{\link{gunzip}}, e.g. 'skip',
 #' 'overwrite' and 'remove'.
 #'

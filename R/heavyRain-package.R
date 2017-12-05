@@ -9,7 +9,7 @@
 #' @title Download and Pre-Process CHIRPS and TRMM Rainfall Data Sets in R
 #' @author Florian Detsch
 #'
-#' @import doParallel foreach raster
+#' @import parallel raster
 #' @importFrom gdalUtils gdal_translate get_subdatasets
 #' @importFrom gimms significantTau
 #' @importFrom ncdf4 nc_open

@@ -11,8 +11,7 @@ extractCHIRPS(x, dsn, cores = 1L, ...)
 
 \item{dsn}{'character'. The destination folder for file extraction.}
 
-\item{cores}{'integer'. The number of cores used for parallel processing via
-\strong{doParallel}.}
+\item{cores}{'integer'. The number of cores used for parallel processing.}
 
 \item{...}{Further arguments passed to \code{\link{gunzip}}, e.g. 'skip',
 'overwrite' and 'remove'.}

@@ -50,13 +50,12 @@ stratifiedMannKendall <- function(x, type = c("raw", "monthly", "seasonal"),
   type = type[1]
 
   ## parallelize (optional)
-  cl <- parallel::makeCluster(cores)
-  doParallel::registerDoParallel(cl)
-
+  cl <- parallel::makePSOCKcluster(cores)
   on.exit(parallel::stopCluster(cl))
 
-  ##############################################################################
-  ## raw method
+
+  ### raw method -----
+
   if (type == "raw") {
 
     # loop over all desired significance levels
@@ -64,52 +63,48 @@ stratifiedMannKendall <- function(x, type = c("raw", "monthly", "seasonal"),
       gimms::significantTau(y, p = p, prewhitening = prewhitening)
     })
 
-    ##############################################################################
-    ## monthly method
-  } else if (type == "monthly") {
+  } else if (type %in% c("monthly", "seasonal")) {
 
-    # loop over monthly layers
-    suppressWarnings(
-      lst_trends <-
-        foreach(i = 1:12, .export = ls(envir = globalenv())) %dopar% {
-
-          rst_mnth <- x[[seq(i, raster::nlayers(x), 12)]]
-
-          raster::calc(rst_mnth, fun = function(y) {
-            gimms::significantTau(y, p = p, prewhitening = prewhitening)
-          })
-        }
-    )
-
-    # return stacked trend layers
-    return(raster::stack(lst_trends))
+    n = raster::nlayers(x)
+    parallel::clusterExport(cl, c("x", "n"), envir = environment())
 
 
-    ##############################################################################
-    ## seasonal method
-  } else if (type == "seasonal") {
+    ### monthly method -----
 
-    # loop over seasonal layers
-    suppressWarnings(
-      lst_trends <-
-        foreach(i = 1:4, .export = ls(envir = globalenv())) %dopar% {
+    if (type == "monthly") {
 
-                  rst_ssn <- x[[seq(i, raster::nlayers(x), 4)]]
+      # loop over monthly layers
+      lst_trends <- parallel::parLapply(cl, 1:12, function(i) {
 
-                  raster::calc(rst_ssn, fun = function(y) {
-                    gimms::significantTau(y, p = p,
-                                          prewhitening = prewhitening)
-                  })
-                }
-    )
+        rst_mts = raster::subset(x, seq(i, n, 12))
 
-    # return stacked trend layers
-    return(raster::stack(lst_trends))
+        raster::calc(rst_mts, fun = function(y) {
+          gimms::significantTau(y, p = p, prewhitening = prewhitening)
+        })
+      })
+
+
+    ### seasonal method -----
+
+    } else if (type == "seasonal") {
+
+      # loop over seasonal layers
+      lst_trends <- parallel::parLapply(cl, 1:4, function(i) {
+
+        rst_ssn = raster::subset(x, seq(i, n, 4))
+
+        raster::calc(rst_ssn, fun = function(y) {
+          gimms::significantTau(y, p = p,
+                                prewhitening = prewhitening)
+        })
+      })
+    }
+
 
   } else {
     stop("Invalid 'type' argument.\n")
   }
 
   ## return list with different significance layers
-  return(lst_trends)
+  return(raster::stack(lst_trends))
 }
