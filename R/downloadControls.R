@@ -1,8 +1,21 @@
 ### List inventory of CHIRPS pentad, dekad, and monthly data -----
 
-lsCat1 <- function(url) {
+lsCat1 <- function(url, begin, end) {
   onl <- getSplitURL(url)
-  paste0(url, onl)
+
+  tmp = strsplit(onl, "\\.")
+  yrs = sapply(tmp, "[[", 3)
+  mts = paste0(yrs, sapply(tmp, "[[", 4))
+
+  ## subset with months of interest
+  ids <- match(sapply(c(begin, end), function(i) format(i, "%Y%m")), mts)
+
+  if (any(is.na(ids))) {
+    if (is.na(ids[1])) ids[1] <- 1
+    if (is.na(ids[2])) ids[2] <- length(mts)
+  }
+
+  paste0(url, onl[ids[1]:ids[2]])
 }
 
 

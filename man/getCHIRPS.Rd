@@ -48,10 +48,11 @@ data for a given time span from Climate Hazards Group's (CHG) FTP server
 }
 \examples{
 \dontrun{
-## Download GIMMS NDVI3g binary data from 2000-2005 (this might take some time...)
-gimms_files <- downloadGimms(x = 2000, y = 2005,
-                             dsn = paste0(getwd(), "/data"))
-gimms_files[1:10]
+## Download CHIRPS monthly data over Africa from 1982-1983
+gzs <- getCHIRPS("africa", tres = "monthly"
+                 , begin = as.Date("1982-01-01"), end = as.Date("1983-12-31")
+                 , dsn = file.path(getwd(), "data"))
+gzs[1:10]
 }
 
 }

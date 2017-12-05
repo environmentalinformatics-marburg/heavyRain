@@ -36,10 +36,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' ## Download GIMMS NDVI3g binary data from 2000-2005 (this might take some time...)
-#' gimms_files <- downloadGimms(x = 2000, y = 2005,
-#'                              dsn = paste0(getwd(), "/data"))
-#' gimms_files[1:10]
+#' ## Download CHIRPS monthly data over Africa from 1982-1983
+#' gzs <- getCHIRPS("africa", tres = "monthly"
+#'                  , begin = as.Date("1982-01-01"), end = as.Date("1983-12-31")
+#'                  , dsn = file.path(getwd(), "data"))
+#' gzs[1:10]
 #' }
 #'
 #' @export getCHIRPS
@@ -82,7 +83,7 @@ getCHIRPS <- function(region = c("global", "whem", "africa", "camer-carib"),
   ch_url <- paste0(serverPath(), "/", ch_ext, "/")
 
   onl <- if (tres %in% c("pentad", "dekad", "monthly")) {
-    lsCat1(ch_url)
+    lsCat1(ch_url, begin, end)
   } else if (tres == "6-hourly") {
     lsCat2(ch_url, begin, end)
   } else if (tres == "daily") {
