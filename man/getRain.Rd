@@ -19,8 +19,8 @@ A \code{character} vector of file paths.
 \description{
 Download a particular rainfall data set. Currently available products
 originate from Climate Hazards Group InfraRed Precipitation with Station Data
-(CHIRPS, \url{http://chg.geog.ucsb.edu/data/chirps/}) and the Tropical
-Rainfall Measuring Mission (TRMM, \url{https://pmm.nasa.gov/trmm}).
+(\href{http://chg.geog.ucsb.edu/data/chirps/}{CHIRPS}) and the Tropical
+Rainfall Measuring Mission (\href{https://trmm.gsfc.nasa.gov/}{TRMM}).
 }
 \seealso{
 \code{\link{getCHIRPS}}, \code{\link{getTRMM}}.
