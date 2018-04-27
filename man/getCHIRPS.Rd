@@ -5,9 +5,10 @@
 \title{Download CHIRPS data}
 \usage{
 getCHIRPS(region = c("global", "whem", "africa", "camer-carib"),
-  format = c("tifs", "bils", "pngs"), tres = c("6-hourly", "daily",
-  "pentad", "dekad", "monthly"), sres = c(0.05, 0.25), begin = NULL,
-  end = NULL, dsn = getwd(), overwrite = FALSE, cores = 1L, ...)
+  format = c("tifs", "netcdf", "bils", "pngs"), tres = c("6-hourly",
+  "daily", "pentad", "dekad", "monthly"), sres = c(0.05, 0.25),
+  begin = NULL, end = NULL, dsn = getwd(), overwrite = FALSE,
+  cores = 1L, ...)
 }
 \arguments{
 \item{region}{'character'. Region of interest; one of 'global', 'whem'
@@ -17,7 +18,7 @@ Caribbean). See the official CHIRPS README (available online at
 for further information.}
 
 \item{format}{'character'. Desired file format; one of 'tifs' (default),
-'bils' or 'pngs'.}
+'netcdf', 'bils' or 'pngs'.}
 
 \item{tres}{'character'. Desired temporal resolution; one of '6-hourly'
 (default), 'daily', 'pentad', 'dekad' or 'monthly'.}

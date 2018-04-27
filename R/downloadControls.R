@@ -73,6 +73,29 @@ lsCat3 <- function(url, begin, end) {
 }
 
 
+### List inventory of CHIRPS daily data in NetCDF format -----
+
+lsCat4 <- function(url, begin, end) {
+
+  ## available years
+  yrs <- getSplitURL(url)
+  yrs <- grep(".nc$", yrs, value = TRUE)
+
+  ## subset with years of interest
+  ids <- sapply(
+    sapply(c(begin, end), function(i) format(i, "%Y"))
+    , function(i) grep(i, yrs)
+  )
+
+  if (any(is.na(ids))) {
+    if (is.na(ids[1])) ids[1] <- 1
+    if (is.na(ids[2])) ids[2] <- length(yrs)
+  }
+
+  paste0(url, yrs[ids[1]:ids[2]])
+}
+
+
 ### Server paths for CHIRPS or TRMM data download -----
 
 serverPath <- function(server = c("chirps", "trmm"), version = "2.0") {

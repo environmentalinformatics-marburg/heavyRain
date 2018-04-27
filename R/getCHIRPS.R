@@ -11,7 +11,7 @@
 #' \url{ftp://chg-ftpout.geog.ucsb.edu/pub/org/chg/products/CHIRPS-2.0/README-CHIRPS.txt})
 #' for further information.
 #' @param format 'character'. Desired file format; one of 'tifs' (default),
-#' 'bils' or 'pngs'.
+#' 'netcdf', 'bils' or 'pngs'.
 #' @param tres 'character'. Desired temporal resolution; one of '6-hourly'
 #' (default), 'daily', 'pentad', 'dekad' or 'monthly'.
 #' @param sres 'numeric'. Desired spatial resolution; one of
@@ -46,7 +46,7 @@
 #' @export getCHIRPS
 #' @name getCHIRPS
 getCHIRPS <- function(region = c("global", "whem", "africa", "camer-carib"),
-                      format = c("tifs", "bils", "pngs"),
+                      format = c("tifs", "netcdf", "bils", "pngs"),
                       tres = c("6-hourly", "daily", "pentad", "dekad", "monthly"),
                       sres = c(0.05, 0.25),
                       begin = NULL, end = NULL,
@@ -87,7 +87,11 @@ getCHIRPS <- function(region = c("global", "whem", "africa", "camer-carib"),
   } else if (tres == "6-hourly") {
     lsCat2(ch_url, begin, end)
   } else if (tres == "daily") {
-    lsCat3(ch_url, begin, end)
+    if (format == "netcdf") {
+      lsCat4(ch_url, begin, end)
+    } else {
+      lsCat3(ch_url, begin, end)
+    }
   } else {
     stop("Specified temporal resolution (currently) not available.\n")
   }
