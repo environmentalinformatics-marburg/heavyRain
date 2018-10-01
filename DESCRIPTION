@@ -9,6 +9,7 @@ Description: Download and Pre-Process CHIRPS and TRMM Rainfall Data Sets in R.
 License: GPL (>= 3) | file LICENSE
 LazyData: TRUE
 Depends:
+    R (>= 2.10),
     parallel,
     raster
 Imports:

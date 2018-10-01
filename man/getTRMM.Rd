@@ -40,8 +40,8 @@ single date.
 }
 \description{
 Download TRMM 3B42 version 7 daily (NetCDF) or 3-hourly (HDF) files for a
-given time span from the NASA FTP servers
-(\url{https://disc3.nascom.nasa.gov/data/TRMM_L3/}).
+given time span from the
+\href{https://disc2.gesdisc.eosdis.nasa.gov/data/TRMM_L3/}{NASA FTP servers}.
 }
 \examples{
 \dontrun{
@@ -55,8 +55,9 @@ getTRMM(begin = "2015-01-01", end = "2015-01-05", type = "3-hourly")
 }
 \references{
 MacRitchie K (2015) README Document for the Tropical Rainfall Measurement
-Mission (TRMM). Available online from
-\url{https://disc3.nascom.nasa.gov/data/TRMM_L3/TRMM_3B42.7/doc/README.TRMM_V7.pdf}.
+Mission (TRMM). Available online:
+\url{https://disc2.gesdisc.eosdis.nasa.gov/data/TRMM_L3/TRMM_3B43/doc/README.TRMM_V7.pdf}
+(2018-10-01).
 }
 \seealso{
 \code{\link{download.file}}.
