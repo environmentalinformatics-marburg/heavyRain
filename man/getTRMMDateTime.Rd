@@ -2,7 +2,6 @@
 % Please edit documentation in R/getTRMMDateTime.R
 \name{getTRMMDateTime}
 \alias{getTRMMDateTime}
-\alias{getTRMMDateTime}
 \alias{getTRMMDate}
 \alias{getTRMMTime}
 \title{TRMM 3B42 Date/Time Functions}
