@@ -120,5 +120,5 @@ serverPath <- function(server = c("chirps", "trmm"), version = "2.0") {
 
 getSplitURL <- function(url) {
   onl <- RCurl::getURL(url, dirlistonly = TRUE)
-  unlist(strsplit(onl, "\r\n"))
+  unlist(strsplit(onl, "\r{0,1}\n{1}"))
 }

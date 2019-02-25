@@ -2,7 +2,7 @@ Package: heavyRain
 Type: Package
 Title: Download and Pre-Process CHIRPS and TRMM Rainfall Data Sets in R
 Version: 1.0.2
-Date: 2018-10-01
+Date: 2019-02-25
 Author: Florian Detsch
 Maintainer: Florian Detsch <fdetsch@web.de>
 Description: Download and Pre-Process CHIRPS and TRMM Rainfall Data Sets in R.
