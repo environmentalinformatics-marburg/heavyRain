@@ -6,7 +6,7 @@ Date: 2019-02-25
 Author: Florian Detsch
 Maintainer: Florian Detsch <fdetsch@web.de>
 Description: Download and Pre-Process CHIRPS and TRMM Rainfall Data Sets in R.
-License: GPL (>= 3) | file LICENSE
+License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
     R (>= 2.10),
