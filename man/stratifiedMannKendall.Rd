@@ -4,8 +4,13 @@
 \alias{stratifiedMannKendall}
 \title{Compute stratified Mann-Kendall trend tests}
 \usage{
-stratifiedMannKendall(x, type = c("raw", "monthly", "seasonal"),
-  p = 0.001, prewhitening = TRUE, cores = 1L)
+stratifiedMannKendall(
+  x,
+  type = c("raw", "monthly", "seasonal"),
+  p = 0.001,
+  prewhitening = TRUE,
+  cores = 1L
+)
 }
 \arguments{
 \item{x}{A 'RasterStack' consisting of consecutive time series observations.}

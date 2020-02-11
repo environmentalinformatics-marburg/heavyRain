@@ -18,5 +18,5 @@ Imports:
     ncdf4,
     R.utils,
     RCurl
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Encoding: UTF-8

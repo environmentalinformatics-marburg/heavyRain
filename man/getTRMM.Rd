@@ -4,8 +4,17 @@
 \alias{getTRMM}
 \title{Download TRMM 3B42 Data}
 \usage{
-getTRMM(begin, end, type = c("daily", "3-hourly"), dsn = ".",
-  xml = FALSE, overwrite = FALSE, quiet = TRUE, cores = 1L, ...)
+getTRMM(
+  begin,
+  end,
+  type = c("daily", "3-hourly"),
+  dsn = ".",
+  xml = FALSE,
+  overwrite = FALSE,
+  quiet = TRUE,
+  cores = 1L,
+  ...
+)
 }
 \arguments{
 \item{begin, end}{Start and end date as \code{Date} or \code{character}.}

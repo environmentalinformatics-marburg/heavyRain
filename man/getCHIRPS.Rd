@@ -4,11 +4,18 @@
 \alias{getCHIRPS}
 \title{Download CHIRPS data}
 \usage{
-getCHIRPS(region = c("global", "whem", "africa", "camer-carib"),
-  format = c("tifs", "netcdf", "bils", "pngs"), tres = c("6-hourly",
-  "daily", "pentad", "dekad", "monthly"), sres = c(0.05, 0.25),
-  begin = NULL, end = NULL, dsn = getwd(), overwrite = FALSE,
-  cores = 1L, ...)
+getCHIRPS(
+  region = c("global", "whem", "africa", "camer-carib"),
+  format = c("tifs", "netcdf", "bils", "pngs"),
+  tres = c("6-hourly", "daily", "pentad", "dekad", "monthly"),
+  sres = c(0.05, 0.25),
+  begin = NULL,
+  end = NULL,
+  dsn = getwd(),
+  overwrite = FALSE,
+  cores = 1L,
+  ...
+)
 }
 \arguments{
 \item{region}{'character'. Region of interest; one of 'global', 'whem'

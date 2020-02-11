@@ -4,8 +4,14 @@
 \alias{rasterizeTRMMhdf}
 \title{Rasterize TRMM 3B42 HDF Data}
 \usage{
-rasterizeTRMMhdf(x, SDSstring = "111111", ext = NULL, cores = 1L,
-  filename = "", ...)
+rasterizeTRMMhdf(
+  x,
+  SDSstring = "111111",
+  ext = NULL,
+  cores = 1L,
+  filename = "",
+  ...
+)
 }
 \arguments{
 \item{x}{\code{character}. TRMM 3B42 .HDF file(s).}
