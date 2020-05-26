@@ -2,6 +2,7 @@
 
 lsCat1 <- function(url, begin, end) {
   onl <- getSplitURL(url)
+  onl <- onl[onl != "sub"]
 
   tmp = strsplit(onl, "\\.")
   yrs = sapply(tmp, "[[", 3)
