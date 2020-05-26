@@ -4,7 +4,9 @@
 \name{baleCHIRPS.v2}
 \alias{baleCHIRPS.v2}
 \title{Bale Mountains CHIRPS.v2}
-\format{\code{raster::RasterStack}}
+\format{
+\code{raster::RasterStack}
+}
 \description{
 Bale Mountains CHIRPS.v2.
 }
